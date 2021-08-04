@@ -93,6 +93,9 @@ namespace AlienMeatTest.Compatibility
                     continue;
                 // defName == "VCEF_PufferfishFish"
                 // 복어는 특별한 hediff을 가지고 있으니까 추가할까?
+                var fishSize = fishDefTypeOf.GetField("fishSizeCategory").GetValue(fish);
+                if (fishSize.ToString() == "Special")
+                    continue;
 
                 var thingDefName = (fishDefTypeOf.GetField("thingDef").GetValue(fish) as ThingDef)?.defName;
 
@@ -107,7 +110,7 @@ namespace AlienMeatTest.Compatibility
             return toRemoveFishDefs.Count;
         }
 
-        public static void RemoveDefs(List<string> fishDefs, List<string> fishThingDefs)
+        private static void RemoveDefs(List<string> fishDefs, List<string> fishThingDefs)
         {
             if (fishDefs.Count != fishThingDefs.Count)
             {

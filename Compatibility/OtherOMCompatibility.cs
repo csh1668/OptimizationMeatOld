@@ -28,7 +28,7 @@ namespace AlienMeatTest.Compatibility
             }
         }
 
-        private static bool Detect()
+        public static bool Detect()
         {
             return DetectMod();
         }

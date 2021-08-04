@@ -45,21 +45,21 @@ namespace AlienMeatTest
 
                 if (thingDef.race.Humanlike)
                 {
-                    if (settings.optimizationAlienMeat == false)
+                    if (settings.OptimizationAlienMeat == false)
                         continue;
                     toRemoveDefs.Add(thingDef.race.meatDef.defName.Clone() as string);
                     thingDef.race.meatDef = humanMeatDef;
                 }
                 else if (thingDef.race.FleshType == FleshTypeDefOf.Insectoid)
                 {
-                    if (settings.optimizationAnimalMeat == false)
+                    if (settings.OptimizationAnimalMeat == false)
                         continue;
                     toRemoveDefs.Add(thingDef.race.meatDef.defName.Clone() as string);
                     thingDef.race.meatDef = insectMeatDef;
                 }
                 else
                 {
-                    if (settings.optimizationAnimalMeat == false)
+                    if (settings.OptimizationAnimalMeat == false)
                         continue;
                     toRemoveDefs.Add(thingDef.race.meatDef.defName.Clone() as string);
                     thingDef.race.meatDef = cowMeatDef;
@@ -75,7 +75,7 @@ namespace AlienMeatTest
             return toRemoveDefs.Count;
         }
 
-        public static List<string> GetSingleIngredients()
+        private static List<string> GetSingleIngredients()
         {
             var recipes = DefDatabase<RecipeDef>.AllDefs;
 
@@ -97,7 +97,7 @@ namespace AlienMeatTest
             return singleIngredients.Distinct().ToList();
         }
 
-        public static void RemoveDefs(List<string> toRemoveDefs)
+        private static void RemoveDefs(List<string> toRemoveDefs)
         {
             MethodInfo removeMethod = typeof(DefDatabase<ThingDef>).GetMethod("Remove", BindingFlags.Static | BindingFlags.NonPublic);
             foreach (var removeDef in toRemoveDefs)
@@ -120,7 +120,7 @@ namespace AlienMeatTest
             ThingCategoryDefOf.Root.ResolveReferences();
         }
 
-        public static ThingDef MakeNewRawMeat()
+        private static ThingDef MakeNewRawMeat()
         {
             var cow = ThingDef.Named("Cow");
             ThingDef rawMeat = new ThingDef();

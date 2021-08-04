@@ -19,7 +19,7 @@ namespace AlienMeatTest
         public static readonly string GAME_VERSION = "1.3";
 #endif
 
-        public static readonly string VERSION = "1.2.1";
+        public static readonly string VERSION = "1.2.2";
         public static readonly string MOD_NAME = "Optimization: Meats - C# Edition";
         public static readonly string MOD_NAME_COLORED = $"<color=blue>{MOD_NAME}</color>";
 
@@ -34,7 +34,7 @@ namespace AlienMeatTest
             Stopwatch sp = new Stopwatch();
             sp.Start();
 
-            AnimalLogicCompatibility.DoWarnIfDetected();
+            AnimalsLogicCompatibility.DoWarnIfDetected();
             OtherOMCompatibility.DoWarnIfDetected();
 
             int count = 0,
@@ -42,25 +42,43 @@ namespace AlienMeatTest
                 fishCount = VFECompatibility.OptimizeFishIfDetected();
 
             count += meatCount + fishCount;
-            MeatLogger.Debug($"optimized meats: {meatCount}, optimized fishes: {fishCount}");
 
             sp.Stop();
 
-            MeatLogger.Message($"<color=red>{count}</color> meat defs have been removed from the game. Elapsed Time: {sp.ElapsedMilliseconds}ms");
+            MeatLogger.Message(
+                $"<color=red>{count}</color> meat defs have been removed from the game. Elapsed Time: {sp.ElapsedMilliseconds}ms");
         }
     }
-
-    //[HarmonyPatch(typeof(ThingDefGenerator_Meat)), HarmonyPatch("ImpliedMeatDefs")]
-    //class Test
-    //{
-    //    static IEnumerable<ThingDef> Postfix(IEnumerable<ThingDef> values)
-    //    {
-    //        MeatLogger.Message("Hello");
-    //        yield return MeatOptimization.MakeNewRawMeat();
-    //        foreach (var value in values)
-    //        {
-    //            yield return value;
-    //        }
-    //    }
-    //}
 }
+
+//    [HarmonyPatch(typeof(DrugPolicyDatabase)), HarmonyPatch("NewDrugPolicyFromDef")]
+//    class Test
+//    {
+//        static bool Prefix(DrugPolicyDatabase __instance, DrugPolicyDef def, ref DrugPolicy __result)
+//        {
+//            __result = __instance.MakeNewDrugPolicy();
+//            __result.label = def.LabelCap;
+//            __result.sourceDef = def;
+//            if (def.allowPleasureDrugs)
+//            {
+//                for (int i = 0; i < __result.Count; i++)
+//                {
+//                    if (__result[i].drug.IsPleasureDrug)
+//                    {
+//                        __result[i].allowedForJoy = true;
+//                    }
+//                }
+//            }
+//            if (def.entries != null)
+//            {
+//                for (int j = 0; j < def.entries.Count; j++)
+//                {
+//                    MeatLogger.Debug($"{def.entries[j].drug.defName}");
+//                    __result[def.entries[j].drug].CopyFrom(def.entries[j]);
+//                }
+//            }
+
+//            return false;
+//        }
+//    }
+//}

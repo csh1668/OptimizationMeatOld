@@ -74,7 +74,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Compatibility\AnimalLogicCompatibility.cs" />
+    <Compile Include="Compatibility\AnimalsLogicCompatibility.cs" />
     <Compile Include="Compatibility\OtherOMCompatibility.cs" />
     <Compile Include="Compatibility\VFECompatibility.cs" />
     <Compile Include="MeatLogger.cs" />
