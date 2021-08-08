@@ -24,7 +24,7 @@ namespace AlienMeatTest.Compatibility
         {
             if (!Detect()) return 0;
             MeatLogger.Message("Vanilla Fishing Expanded Detected!");
-            if (!settings.optimizationFishMeat) return 0;
+            if (!settings.OptimizationFishMeat) return 0;
             MeatLogger.Debug("Fish Optimizing...");
             fishDefTypeOf = Type.GetType("VCE_Fishing.FishDef, VCE-Fishing");
             fishDefDatabaseTypeOf = typeof(DefDatabase<>).MakeGenericType(fishDefTypeOf);
@@ -51,7 +51,7 @@ namespace AlienMeatTest.Compatibility
             {
                 if (fish == null) continue;
                 var name = fishDefTypeOf.GetField("defName").GetValue(fish) as string;
-                MeatLogger.DebugStack(name);
+                MeatLogger.DebugEnumerate(name);
                 if (name == "VCEF_AnchovyFish")
                     smallFish = fish as Def;
                 else if (name == "VCEF_MackerelFish")
@@ -59,7 +59,7 @@ namespace AlienMeatTest.Compatibility
                 else if (name == "VCEF_SalmonFish")
                     largeFish = fish as Def;
             }
-            MeatLogger.DebugStack(fishDefs.EnumerableCount().ToString());
+            MeatLogger.DebugEnumerate(fishDefs.EnumerableCount().ToString());
             MeatLogger.Debug();
 
             if (smallFish == null || mediumFish == null || largeFish == null)

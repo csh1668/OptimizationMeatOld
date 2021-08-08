@@ -9,7 +9,6 @@ namespace AlienMeatTest
     public static class MeatOptimization
     {
         private static MeatModSettings settings = LoadedModManager.GetMod<MeatMod>().GetSettings<MeatModSettings>();
-
         public static int OptimizeMeat()
         {
             // Get all of ThingDefs
@@ -19,6 +18,7 @@ namespace AlienMeatTest
             var cowMeatDef = ThingDef.Named("Meat_Cow");
             var humanMeatDef = ThingDef.Named("Meat_Human");
             var insectMeatDef = ThingDef.Named("Meat_Megaspider");
+
 
             // Meats that need to be removed from the game
             List<string> toRemoveDefs = new List<string>();
@@ -68,11 +68,31 @@ namespace AlienMeatTest
 
             toRemoveDefs = toRemoveDefs.Distinct().ToList();
 
+            foreach (var removeDef in toRemoveDefs)
+            {
+                MeatLogger.DebugEnumerate(removeDef);
+            }
+            MeatLogger.DebugEnumerate(toRemoveDefs.Count.ToString()); MeatLogger.Debug();
+
             RemoveDefs(toRemoveDefs);
 
             //DefDatabase<ThingDef>.ResolveAllReferences();
 
+            //DefGenerator.AddImpliedDef(MakeNewRawMeat());
+
             return toRemoveDefs.Count;
+        }
+
+        public static void PostOptimize()
+        {
+            ThingCategoryDefOf.MeatRaw.ResolveReferences();
+            ThingCategoryDefOf.Foods.ResolveReferences();
+            ThingCategoryDefOf.Root.ResolveReferences();
+
+            int before = ThingSetMakerUtility.allGeneratableItems.Count;
+            ThingSetMakerUtility.Reset();
+            int after = ThingSetMakerUtility.allGeneratableItems.Count;
+            MeatLogger.Debug($"Amount of removed from ThingSetMakerUtility.allGeneratableItems: {before - after}");
         }
 
         private static List<string> GetSingleIngredients()
@@ -115,9 +135,6 @@ namespace AlienMeatTest
                 // Remove def from DefDatabase
                 removeMethod?.Invoke(null, new object[] { ThingDef.Named(removeDef) });
             }
-            ThingCategoryDefOf.MeatRaw.ResolveReferences();
-            ThingCategoryDefOf.Foods.ResolveReferences();
-            ThingCategoryDefOf.Root.ResolveReferences();
         }
 
         private static ThingDef MakeNewRawMeat()
@@ -173,7 +190,7 @@ namespace AlienMeatTest
             rawMeat.graphicData.texPath = "Things/Item/Resource/MeatFoodRaw/Meat_Big";
             rawMeat.defName = "Meat_Raw";
             rawMeat.label = "raw meat";
-            // rawMeat.ingestible.sourceDef
+            //rawMeat.ingestible.sourceDef
             return rawMeat;
         }
     }

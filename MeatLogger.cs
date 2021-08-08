@@ -30,7 +30,7 @@ namespace AlienMeatTest
 
         internal static void Debug(string str)
         {
-            if(settings.debugMode)
+            if(settings.DebugMode)
                 Message($"<color=green>DEBUG</color> | " + str);
         }
 
@@ -40,7 +40,7 @@ namespace AlienMeatTest
             sb.Clear();
         }
 
-        internal static void DebugStack(string str)
+        internal static void DebugEnumerate(string str)
         {
             sb.Append(str + ", ");
         }

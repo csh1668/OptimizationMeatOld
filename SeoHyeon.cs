@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using AlienMeatTest;
 using HarmonyLib;
 using Verse;
 using AlienMeatTest.Compatibility;
@@ -19,7 +20,7 @@ namespace AlienMeatTest
         public static readonly string GAME_VERSION = "1.3";
 #endif
 
-        public static readonly string VERSION = "1.2.2";
+        public static readonly string VERSION = "1.2.3";
         public static readonly string MOD_NAME = "Optimization: Meats - C# Edition";
         public static readonly string MOD_NAME_COLORED = $"<color=blue>{MOD_NAME}</color>";
 
@@ -43,6 +44,8 @@ namespace AlienMeatTest
 
             count += meatCount + fishCount;
 
+            MeatOptimization.PostOptimize();
+
             sp.Stop();
 
             MeatLogger.Message(
@@ -51,34 +54,21 @@ namespace AlienMeatTest
     }
 }
 
-//    [HarmonyPatch(typeof(DrugPolicyDatabase)), HarmonyPatch("NewDrugPolicyFromDef")]
-//    class Test
+//[HarmonyPatch(typeof(ThingSetMakerUtility)), HarmonyPatch("GetAllowedThingDefs")]
+//class Test
+//{
+//    static IEnumerable<ThingDef> Postfix(IEnumerable<ThingDef> values, ThingSetMakerParams parms)
 //    {
-//        static bool Prefix(DrugPolicyDatabase __instance, DrugPolicyDef def, ref DrugPolicy __result)
+//        MeatLogger.Debug("Hello");
+//        foreach (var def in parms.filter.AllowedThingDefs)
 //        {
-//            __result = __instance.MakeNewDrugPolicy();
-//            __result.label = def.LabelCap;
-//            __result.sourceDef = def;
-//            if (def.allowPleasureDrugs)
-//            {
-//                for (int i = 0; i < __result.Count; i++)
-//                {
-//                    if (__result[i].drug.IsPleasureDrug)
-//                    {
-//                        __result[i].allowedForJoy = true;
-//                    }
-//                }
-//            }
-//            if (def.entries != null)
-//            {
-//                for (int j = 0; j < def.entries.Count; j++)
-//                {
-//                    MeatLogger.Debug($"{def.entries[j].drug.defName}");
-//                    __result[def.entries[j].drug].CopyFrom(def.entries[j]);
-//                }
-//            }
+//            MeatLogger.DebugEnumerate(def.defName);
+//        }
+//        MeatLogger.Debug();
 
-//            return false;
+//        foreach (var value in values)
+//        {
+//            yield return value;
 //        }
 //    }
 //}
