@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using System.Collections;
+using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -9,6 +10,7 @@ namespace AlienMeatTest
     public static class MeatOptimization
     {
         private static MeatModSettings settings = LoadedModManager.GetMod<MeatMod>().GetSettings<MeatModSettings>();
+        internal static List<string> toRemoveDefsCached = null;
         public static int OptimizeMeat()
         {
             // Get all of ThingDefs
@@ -68,11 +70,8 @@ namespace AlienMeatTest
 
             toRemoveDefs = toRemoveDefs.Distinct().ToList();
 
-            foreach (var removeDef in toRemoveDefs)
-            {
-                MeatLogger.DebugEnumerate(removeDef);
-            }
-            MeatLogger.DebugEnumerate(toRemoveDefs.Count.ToString()); MeatLogger.Debug();
+            MeatLogger.Debugs(toRemoveDefs);
+            toRemoveDefsCached = toRemoveDefs;
 
             RemoveDefs(toRemoveDefs);
 
@@ -83,17 +82,6 @@ namespace AlienMeatTest
             return toRemoveDefs.Count;
         }
 
-        public static void PostOptimize()
-        {
-            ThingCategoryDefOf.MeatRaw.ResolveReferences();
-            ThingCategoryDefOf.Foods.ResolveReferences();
-            ThingCategoryDefOf.Root.ResolveReferences();
-
-            int before = ThingSetMakerUtility.allGeneratableItems.Count;
-            ThingSetMakerUtility.Reset();
-            int after = ThingSetMakerUtility.allGeneratableItems.Count;
-            MeatLogger.Debug($"Amount of removed from ThingSetMakerUtility.allGeneratableItems: {before - after}");
-        }
 
         private static List<string> GetSingleIngredients()
         {

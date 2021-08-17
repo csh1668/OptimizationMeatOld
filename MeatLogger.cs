@@ -10,8 +10,8 @@ namespace AlienMeatTest
 {
     internal static class MeatLogger
     {
-        private static MeatModSettings settings = LoadedModManager.GetMod<MeatMod>().GetSettings<MeatModSettings>();
         private static StringBuilder sb = new StringBuilder();
+        internal static bool debugMode = false;
 
         internal static void Message(string str)
         {
@@ -30,7 +30,7 @@ namespace AlienMeatTest
 
         internal static void Debug(string str)
         {
-            if(settings.DebugMode)
+            if(debugMode)
                 Message($"<color=green>DEBUG</color> | " + str);
         }
 
@@ -43,6 +43,16 @@ namespace AlienMeatTest
         internal static void DebugEnumerate(string str)
         {
             sb.Append(str + ", ");
+        }
+
+        internal static void Debugs(IEnumerable<string> contents)
+        {
+            if (contents == null) return;
+            foreach (var content in contents)
+            {
+                DebugEnumerate(content);
+            }
+            Debug();
         }
 
         internal static void Messages(IEnumerable enumerable)
