@@ -13,8 +13,10 @@ namespace AlienMeatTest
     {
         public static void PostOptimize()
         {
+            MeatLogger.Debug("Post optimization start...");
             ResolveCategoryDefs();
             ResetThingSetMakerUtility();
+            ResolveLanguageDataForRawMeat();
 
             foreach (var thingSetMakerDef in DefDatabase<ThingSetMakerDef>.AllDefs)
             {
@@ -44,6 +46,9 @@ namespace AlienMeatTest
 
                 }
             }
+
+
+            MeatLogger.Debug("Post optimization done!");
         }
 
         private static void ResolveCategoryDefs()
@@ -59,6 +64,23 @@ namespace AlienMeatTest
             ThingSetMakerUtility.Reset();
             int after = ThingSetMakerUtility.allGeneratableItems.Count;
             MeatLogger.Debug($"Amount of removed from ThingSetMakerUtility.allGeneratableItems: {before - after}");
+        }
+
+        private static void ResolveLanguageDataForRawMeat()
+        {
+            if (!Patches.DefGeneratorPatch.PatchExecuted)
+                return;
+            var meatCow = ThingDef.Named("Meat_Cow");
+            var rawMeatLabel = Patches.DefGeneratorPatch.RawMeatLabel;
+            if (meatCow.label != rawMeatLabel)
+            {
+                MeatLogger.Debug(meatCow.label + " changed to " + rawMeatLabel);
+                meatCow.label = Patches.DefGeneratorPatch.RawMeatLabel;
+            }
+            else
+            {
+                MeatLogger.Debug(meatCow.label + ", no need to change");
+            }
         }
         private static IEnumerable<ThingSetMaker> GetDescendantThingSetMakers(ThingSetMaker parent)
         {

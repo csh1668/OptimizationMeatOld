@@ -32,10 +32,10 @@ namespace AlienMeatTest
         {
             //Harmony h = new Harmony("com.seohyeon.optimization.meat");
             //h.PatchAll(Assembly.GetExecutingAssembly());
-            if (!DefGeneratorPatch.PatchExecuted)
-            {
-                MeatLogger.Error("The patch is not executed, report this error to developer");
-            }
+            //if (!DefGeneratorPatch.PatchExecuted)
+            //{
+            //    MeatLogger.Error("The patch is not executed, report this error to developer");
+            //}
 
             MeatLogger.Message("Mod version: " + VERSION + " for RimWorld version: " + GAME_VERSION);
 

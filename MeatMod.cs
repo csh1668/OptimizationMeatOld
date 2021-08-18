@@ -19,8 +19,9 @@ namespace AlienMeatTest
             settings = GetSettings<MeatModSettings>();
             MeatLogger.debugMode = settings.DebugMode;
 
-            //Harmony h = new Harmony("com.seohyeon.optimization.meat");
-            //h.PatchAll(Assembly.GetExecutingAssembly());
+
+            Harmony h = new Harmony("com.seohyeon.optimization.meat");
+            h.PatchAll(Assembly.GetExecutingAssembly());
         } 
 
         public override void DoSettingsWindowContents(Rect inRect)
