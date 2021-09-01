@@ -15,6 +15,7 @@ namespace AlienMeatTest.Compatibility
     public static class VFECompatibility
     {
         public static string PackageID { get; private set; } = "vanillaexpanded.vcef";
+        public static List<string> RemovedDefs { get; private set; } = new List<string>();
         private static MeatModSettings settings = LoadedModManager.GetMod<MeatMod>().GetSettings<MeatModSettings>();
 
         private static Type fishDefTypeOf;
@@ -75,6 +76,13 @@ namespace AlienMeatTest.Compatibility
             fishDefTypeOf.GetField("canBeSaltwater").SetValue(mediumFish, true);
             fishDefTypeOf.GetField("canBeSaltwater").SetValue(largeFish, true);
 
+            ((ThingDef) fishDefTypeOf.GetField("thingDef").GetValue(smallFish)).label =
+                "OM_smallFishLabel".Translate();
+            ((ThingDef)fishDefTypeOf.GetField("thingDef").GetValue(mediumFish)).label =
+                "OM_mediumFishLabel".Translate();
+            ((ThingDef)fishDefTypeOf.GetField("thingDef").GetValue(largeFish)).label =
+                "OM_largeFishLabel".Translate();
+
             List<string> biomes = new List<string>
             {
                 "Cold", "Warm", "Hot"
@@ -105,6 +113,10 @@ namespace AlienMeatTest.Compatibility
 
             toRemoveFishDefs = toRemoveFishDefs.Distinct().ToList();
             toRemoveThingDefs = toRemoveThingDefs.Distinct().ToList();
+
+            RemovedDefs.Clear();
+            RemovedDefs.AddRange(toRemoveThingDefs);
+
             RemoveDefs(toRemoveFishDefs, toRemoveThingDefs);
 
             return toRemoveFishDefs.Count;

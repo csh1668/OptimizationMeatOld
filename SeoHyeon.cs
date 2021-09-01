@@ -8,7 +8,6 @@ using System.Reflection;
 using HarmonyLib;
 using Verse;
 using RimWorld;
-using AlienMeatTest;
 using AlienMeatTest.Compatibility;
 using AlienMeatTest.Patches;
 
@@ -25,7 +24,7 @@ namespace AlienMeatTest
         public static readonly string GAME_VERSION = "1.3";
 #endif
 
-        public static readonly string VERSION = "1.2.4";
+        public static readonly string VERSION = "1.2.4c";
         
 
         static SeoHyeon()

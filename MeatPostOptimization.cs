@@ -2,8 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using AlienMeatTest.Compatibility;
 using RimWorld;
 using Verse;
 
@@ -14,9 +16,16 @@ namespace AlienMeatTest
         public static void PostOptimize()
         {
             MeatLogger.Debug("Post optimization start...");
+            // TODO: 이거 고기 add 할때 아예 그냥 인육이랑 소고기랑 곤충고기 추가되지 못하게
+            PostfixRemovedMeats(MeatOptimization.RemovedDefs);
+            PostfixRemovedMeats(VFECompatibility.RemovedDefs);
+
             ResolveCategoryDefs();
             ResetThingSetMakerUtility();
             ResolveLanguageDataForRawMeat();
+            ResourceCounter.ResetDefs();
+            ResolveRecipeDefs();
+
 
             foreach (var thingSetMakerDef in DefDatabase<ThingSetMakerDef>.AllDefs)
             {
@@ -27,7 +36,8 @@ namespace AlienMeatTest
                     {
                         foreach (var allowedThingDef in childThingSetMaker.fixedParams.filter.AllowedThingDefs)
                         {
-                            if (MeatOptimization.toRemoveDefsCached.Contains(allowedThingDef.defName))
+                            if (MeatOptimization.RemovedDefs.Contains(allowedThingDef.defName) ||
+                                VFECompatibility.RemovedDefs.Contains(allowedThingDef.defName))
                             {
                                 toDisallow.Add(allowedThingDef);
                             }
@@ -49,6 +59,13 @@ namespace AlienMeatTest
 
 
             MeatLogger.Debug("Post optimization done!");
+        }
+
+        private static void PostfixRemovedMeats(List<string> lst)
+        {
+            lst.Remove("Meat_Cow");
+            lst.Remove("Meat_Human");
+            lst.Remove("Meat_Megaspider");
         }
 
         private static void ResolveCategoryDefs()
@@ -99,6 +116,40 @@ namespace AlienMeatTest
                     foreach (var temp in GetDescendantThingSetMakers(childThingSetMaker))
                     {
                         yield return temp;
+                    }
+                }
+            }
+        }
+
+        private static void ResolveRecipeDefs()
+        {
+            var recipeDefs = DefDatabase<RecipeDef>.AllDefs;
+            foreach (var recipeDef in recipeDefs)
+            {
+                recipeDef.ResolveReferences();
+                foreach (var recipeDefIngredient in recipeDef.ingredients)
+                {
+                    List<ThingDef> toDisallow = new List<ThingDef>();
+                    if (recipeDefIngredient?.filter.AllowedThingDefs != null)
+                    {
+                        foreach (var allowedThingDef in recipeDefIngredient.filter.AllowedThingDefs)
+                        {
+                            if (MeatOptimization.RemovedDefs.Contains(allowedThingDef.defName) ||
+                                Compatibility.VFECompatibility.RemovedDefs.Contains(allowedThingDef.defName))
+                            {
+                                toDisallow.Add(allowedThingDef);
+                            }
+                        }
+
+                        int b = recipeDefIngredient.filter.AllowedDefCount;
+                        foreach (var thingDef in toDisallow)
+                        {
+                            recipeDefIngredient.filter.SetAllow(thingDef, false);
+                        }
+
+                        int a = recipeDefIngredient.filter.AllowedDefCount;
+                        MeatLogger.Debug(
+                            $"Recipe: {recipeDefIngredient.filter.DisplayRootCategory.Label}, {b - a}");
                     }
                 }
             }

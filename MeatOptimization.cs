@@ -10,7 +10,7 @@ namespace AlienMeatTest
     public static class MeatOptimization
     {
         private static MeatModSettings settings = LoadedModManager.GetMod<MeatMod>().GetSettings<MeatModSettings>();
-        internal static List<string> toRemoveDefsCached = null;
+        internal static List<string> RemovedDefs = null;
         public static int OptimizeMeat()
         {
             // Get all of ThingDefs
@@ -71,7 +71,7 @@ namespace AlienMeatTest
             toRemoveDefs = toRemoveDefs.Distinct().ToList();
 
             MeatLogger.Debugs(toRemoveDefs);
-            toRemoveDefsCached = toRemoveDefs;
+            RemovedDefs = toRemoveDefs;
 
             RemoveDefs(toRemoveDefs);
 
