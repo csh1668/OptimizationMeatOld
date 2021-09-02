@@ -66,6 +66,7 @@ namespace AlienMeatTest
             lst.Remove("Meat_Cow");
             lst.Remove("Meat_Human");
             lst.Remove("Meat_Megaspider");
+            lst.Remove("Steel");
         }
 
         private static void ResolveCategoryDefs()
@@ -123,10 +124,11 @@ namespace AlienMeatTest
 
         private static void ResolveRecipeDefs()
         {
+            MeatLogger.Debugs(MeatOptimization.RemovedDefs);
             var recipeDefs = DefDatabase<RecipeDef>.AllDefs;
             foreach (var recipeDef in recipeDefs)
             {
-                recipeDef.ResolveReferences();
+                //recipeDef.ResolveReferences();
                 foreach (var recipeDefIngredient in recipeDef.ingredients)
                 {
                     List<ThingDef> toDisallow = new List<ThingDef>();
@@ -146,7 +148,6 @@ namespace AlienMeatTest
                         {
                             recipeDefIngredient.filter.SetAllow(thingDef, false);
                         }
-
                         int a = recipeDefIngredient.filter.AllowedDefCount;
                         MeatLogger.Debug(
                             $"Recipe: {recipeDefIngredient.filter.DisplayRootCategory.Label}, {b - a}");
