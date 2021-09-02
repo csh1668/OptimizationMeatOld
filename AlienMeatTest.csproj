@@ -82,7 +82,9 @@
     <Compile Include="MeatModSettings.cs" />
     <Compile Include="MeatOptimization.cs" />
     <Compile Include="MeatPostOptimization.cs" />
+    <Compile Include="Patches\DefDatabasePatch.cs" />
     <Compile Include="Patches\DefGeneratorPatch.cs" />
+    <Compile Include="Patches\ThingDefGeneratorPatch.cs" />
     <Compile Include="MeatOptimizerUtility.cs" />
     <Compile Include="SeoHyeon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

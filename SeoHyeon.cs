@@ -24,8 +24,15 @@ namespace AlienMeatTest
         public static readonly string GAME_VERSION = "1.3";
 #endif
 
-        public static readonly string VERSION = "1.2.4c";
-        
+        public static readonly string VERSION = "1.2.4d";
+
+        /*
+         * TODO: 현재 구상중인 새로운 알고리즘
+         * ThingDefGenerator을 Harmony를 통해 고기 생성 메서드를 갈아치운다
+         * 고기를 생성할 때 쇠고기로 통합
+         * DefDatabase<ThingDef>.GetNamed을 Prefix로 Meat_로 시작할 경우 통합된 고기(쇠고기)를 돌려주기
+         */
+
 
         static SeoHyeon()
         {
@@ -39,25 +46,25 @@ namespace AlienMeatTest
             MeatLogger.Message("Mod version: " + VERSION + " for RimWorld version: " + GAME_VERSION);
 
             MeatLogger.Debug("Debug Mode!");
-            Stopwatch sp = new Stopwatch();
-            sp.Start();
+            //Stopwatch sp = new Stopwatch();
+            //sp.Start();
 
-            AnimalsLogicCompatibility.DoWarnIfDetected();
-            OtherOMCompatibility.DoWarnIfDetected();
+            //AnimalsLogicCompatibility.DoWarnIfDetected();
+            //OtherOMCompatibility.DoWarnIfDetected();
 
-            int count = 0,
-                meatCount = MeatOptimization.OptimizeMeat(),
-                fishCount = VFECompatibility.OptimizeFishIfDetected();
+            //int count = 0,
+            //    meatCount = MeatOptimization.OptimizeMeat(),
+            //    fishCount = VFECompatibility.OptimizeFishIfDetected();
 
-            count += meatCount + fishCount;
+            //count += meatCount + fishCount;
 
-            MeatPostOptimization.PostOptimize();
+            //MeatPostOptimization.PostOptimize();
 
 
-            sp.Stop();
+            //sp.Stop();
 
-            MeatLogger.Message(
-                $"<color=red>{count}</color> meat defs have been removed from the game. Elapsed Time: {Math.Round(sp.Elapsed.TotalSeconds,2)}sec");
+            //MeatLogger.Message(
+            //    $"<color=red>{count}</color> meat defs have been removed from the game. Elapsed Time: {Math.Round(sp.Elapsed.TotalSeconds,2)}sec");
         }
     }
 }

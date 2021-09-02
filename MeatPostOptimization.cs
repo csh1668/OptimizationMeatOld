@@ -66,6 +66,7 @@ namespace AlienMeatTest
             lst.Remove("Meat_Cow");
             lst.Remove("Meat_Human");
             lst.Remove("Meat_Megaspider");
+            lst.Remove("Steel");
         }
 
         private static void ResolveCategoryDefs()
@@ -85,14 +86,14 @@ namespace AlienMeatTest
 
         private static void ResolveLanguageDataForRawMeat()
         {
-            if (!Patches.DefGeneratorPatch.PatchExecuted)
+            if (!Patches.ThingDefGeneratorPatch.PatchExecuted)
                 return;
             var meatCow = ThingDef.Named("Meat_Cow");
-            var rawMeatLabel = Patches.DefGeneratorPatch.RawMeatLabel;
+            var rawMeatLabel = Patches.ThingDefGeneratorPatch.RawMeatLabel;
             if (meatCow.label != rawMeatLabel)
             {
                 MeatLogger.Debug(meatCow.label + " changed to " + rawMeatLabel);
-                meatCow.label = Patches.DefGeneratorPatch.RawMeatLabel;
+                meatCow.label = Patches.ThingDefGeneratorPatch.RawMeatLabel;
             }
             else
             {
@@ -148,8 +149,6 @@ namespace AlienMeatTest
                         }
 
                         int a = recipeDefIngredient.filter.AllowedDefCount;
-                        MeatLogger.Debug(
-                            $"Recipe: {recipeDefIngredient.filter.DisplayRootCategory.Label}, {b - a}");
                     }
                 }
             }
