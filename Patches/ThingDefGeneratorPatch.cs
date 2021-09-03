@@ -9,7 +9,7 @@ using Verse;
 
 namespace AlienMeatTest.Patches
 {
-    [HarmonyPatch(typeof(ThingDefGenerator_Meat)), HarmonyPatch("ImpliedMeatDefs")]
+    //[HarmonyPatch(typeof(ThingDefGenerator_Meat)), HarmonyPatch("ImpliedMeatDefs")]
     public class ThingDefGeneratorPatch
     {
         public static IEnumerable<string> ImpliedMeats => impliedMeats;

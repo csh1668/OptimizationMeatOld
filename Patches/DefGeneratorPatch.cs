@@ -32,19 +32,27 @@ namespace AlienMeatTest.Patches
             }
         }
 
-        public static List<Pair<string, string>> MeatOptimizationBreakdown = new List<Pair<string, string>>();
+        public static FieldInfo dic = typeof(DefDatabase<ThingDef>).GetField("defsByName",
+            BindingFlags.Static | BindingFlags.NonPublic);
+        public static bool PatchExcuted { get; private set; }
+
+        public static List<string> WhiteListDefNames { get; set; } = new List<string>
+        {
+            "Cow", "Human", "Megaspider"
+        };
         public static IEnumerable<ThingDef> ImpliedMeatDefsNew()
         {
+            PatchExcuted = true;
+
             bool IsRace(ThingDef thingDef) =>
                 thingDef.category == ThingCategory.Pawn && thingDef.race.useMeatFrom == null &&
                 thingDef.race.specificMeatDef == null;
             MeatLogger.Debug($"Hello");
-            List<ThingDef> baseMeats = new List<ThingDef>
-            {
-                MakeNewOrGetMeat(ThingDef.Named("Cow")),
-                MakeNewOrGetMeat(ThingDef.Named("Human")),
-                MakeNewOrGetMeat(ThingDef.Named("Megaspider"))
-            };
+
+            List<ThingDef> baseMeats = new List<ThingDef>();
+            WhiteListDefNames.ForEach(x => baseMeats.Add(MakeNewOrGetMeat(ThingDef.Named(x))));
+
+            var defsByName = (dic.GetValue(null) as Dictionary<string, ThingDef>);
             // baseMeats.AddRange(Settings.WhitelistMeats);
 
             foreach (ThingDef thingDef in DefDatabase<ThingDef>.AllDefs.ToList())
@@ -68,6 +76,12 @@ namespace AlienMeatTest.Patches
                     else
                     {
                         thingDef.race.meatDef = baseMeats.FirstOrDefault(x => x.defName == "Meat_Cow");
+                    }
+
+                    if (!WhiteListDefNames.Contains(thingDef.defName) &&
+                        !defsByName.TryGetValue("Meat_" + thingDef, out _))
+                    {
+                        defsByName.Add("Meat_" + thingDef, thingDef.race.meatDef);
                     }
                 }
             }
@@ -178,4 +192,5 @@ namespace AlienMeatTest.Patches
             return newMeat;
         }
     }
+
 }
