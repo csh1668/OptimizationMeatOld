@@ -10,7 +10,9 @@ namespace AlienMeatTest
     public static class MeatOptimization
     {
         private static MeatModSettings settings = LoadedModManager.GetMod<MeatMod>().GetSettings<MeatModSettings>();
-        internal static List<string> RemovedDefs = null;
+        // Meats that need to be removed from the game
+        internal static List<string> RemovedDefs = new List<string>();
+        internal static List<string> WhiteList = new List<string>();
         public static int OptimizeMeat()
         {
             // Get all of ThingDefs
@@ -22,15 +24,12 @@ namespace AlienMeatTest
             var insectMeatDef = ThingDef.Named("Meat_Megaspider");
 
 
-            // Meats that need to be removed from the game
-            List<string> toRemoveDefs = new List<string>();
-
             // These ingredients(thingdefs) must not be removed
             List<string> singleIngredients = GetSingleIngredients();
 
             foreach (var thingDef in defs)
             {
-                if (thingDef.race == null || thingDef.race.IsMechanoid)
+                if (thingDef.race == null || thingDef.race.IsMechanoid || WhiteList.Contains(thingDef.defName))
                     continue;
 
                 if (thingDef.race.useMeatFrom != null)
@@ -49,37 +48,37 @@ namespace AlienMeatTest
                 {
                     if (settings.OptimizationAlienMeat == false)
                         continue;
-                    toRemoveDefs.Add(thingDef.race.meatDef.defName.Clone() as string);
+                    RemovedDefs.Add(thingDef.race.meatDef.defName.Clone() as string);
                     thingDef.race.meatDef = humanMeatDef;
+                    
                 }
                 else if (thingDef.race.FleshType == FleshTypeDefOf.Insectoid)
                 {
                     if (settings.OptimizationAnimalMeat == false)
                         continue;
-                    toRemoveDefs.Add(thingDef.race.meatDef.defName.Clone() as string);
+                    RemovedDefs.Add(thingDef.race.meatDef.defName.Clone() as string);
                     thingDef.race.meatDef = insectMeatDef;
+                   
                 }
                 else
                 {
                     if (settings.OptimizationAnimalMeat == false)
                         continue;
-                    toRemoveDefs.Add(thingDef.race.meatDef.defName.Clone() as string);
+                    RemovedDefs.Add(thingDef.race.meatDef.defName.Clone() as string);
                     thingDef.race.meatDef = cowMeatDef;
                 }
             }
+            RemovedDefs = RemovedDefs.Distinct().ToList();
 
-            toRemoveDefs = toRemoveDefs.Distinct().ToList();
+            MeatLogger.Debugs(RemovedDefs);
 
-            MeatLogger.Debugs(toRemoveDefs);
-            RemovedDefs = toRemoveDefs;
-
-            RemoveDefs(toRemoveDefs);
+            RemoveDefs();
 
             //DefDatabase<ThingDef>.ResolveAllReferences();
 
             //DefGenerator.AddImpliedDef(MakeNewRawMeat());
 
-            return toRemoveDefs.Count;
+            return RemovedDefs.Count;
         }
 
 
@@ -105,10 +104,10 @@ namespace AlienMeatTest
             return singleIngredients.Distinct().ToList();
         }
 
-        private static void RemoveDefs(List<string> toRemoveDefs)
+        private static void RemoveDefs()
         {
             MethodInfo removeMethod = typeof(DefDatabase<ThingDef>).GetMethod("Remove", BindingFlags.Static | BindingFlags.NonPublic);
-            foreach (var removeDef in toRemoveDefs)
+            foreach (var removeDef in RemovedDefs)
             {
                 if (removeDef == "Meat_Cow" ||
                     removeDef == "Meat_Human" ||

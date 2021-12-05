@@ -130,6 +130,20 @@ namespace AlienMeatTest.Compatibility
                 return;
             }
 
+            foreach (var categoryDef in DefDatabase<ThingCategoryDef>.AllDefs.SelectMany(x => x.ThisAndChildCategoryDefs))
+            {
+                foreach (var thingDef in fishThingDefs)
+                {
+                    categoryDef.childThingDefs.Remove(ThingDef.Named(thingDef));
+                    //MeatLogger.Debug($"{thingDef} is removed from {categoryDef.defName}");
+                }
+            }
+
+            foreach (var categoryDef in DefDatabase<ThingCategoryDef>.AllDefs.SelectMany(x => x.ThisAndChildCategoryDefs))
+            {
+                categoryDef.ResolveReferences();
+            }
+
             var VCEF_RawFishCategory = ThingCategoryDef.Named("VCEF_RawFishCategory");
             MethodInfo removeFishMethod = fishDefDatabaseTypeOf.GetMethod("Remove", BindingFlags.Static | BindingFlags.NonPublic);
             MethodInfo removeThingMethod = typeof(DefDatabase<ThingDef>).GetMethod("Remove", BindingFlags.Static | BindingFlags.NonPublic);
@@ -144,6 +158,8 @@ namespace AlienMeatTest.Compatibility
                 removeFishMethod.Invoke(null, new object[] {fishDef});
                 removeThingMethod.Invoke(null, new object[] {thingDef});
             }
+
+            
 
             VCEF_RawFishCategory.ResolveReferences();
             ThingCategoryDefOf.MeatRaw.ResolveReferences();

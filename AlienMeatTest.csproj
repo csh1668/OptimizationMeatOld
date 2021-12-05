@@ -52,6 +52,9 @@
       <HintPath>..\..\..\..\DLL\1.3\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="ProjectRimFactory">
+      <HintPath>..\..\..\..\..\..\workshop\content\294100\2033979700\Assemblies\ProjectRimFactory.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -75,14 +78,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compatibility\AnimalsLogicCompatibility.cs" />
+    <Compile Include="Compatibility\MoreFiltersCompatibility.cs" />
     <Compile Include="Compatibility\OtherOMCompatibility.cs" />
     <Compile Include="Compatibility\VFECompatibility.cs" />
+    <Compile Include="Compatibility\WarhammerSkavenCompatibility.cs" />
     <Compile Include="MeatLogger.cs" />
     <Compile Include="MeatMod.cs" />
     <Compile Include="MeatModSettings.cs" />
+    <Compile Include="MeatOptimization.cs" />
+    <Compile Include="MeatPostOptimization.cs" />
     <Compile Include="Patches\DefGeneratorPatch.cs" />
     <Compile Include="SeoHyeon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestPatch.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

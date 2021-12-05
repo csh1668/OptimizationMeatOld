@@ -24,7 +24,7 @@ namespace AlienMeatTest
         public static readonly string GAME_VERSION = "1.3";
 #endif
 
-        public static readonly string VERSION = "1.2.4c";
+        public static readonly string VERSION = "1.2.4e";
         
 
         static SeoHyeon()
@@ -42,16 +42,29 @@ namespace AlienMeatTest
             Stopwatch sp = new Stopwatch();
             sp.Start();
 
+            #region CompatibilityPatchBeforeMainOptimization
+
             AnimalsLogicCompatibility.DoWarnIfDetected();
             OtherOMCompatibility.DoWarnIfDetected();
+            WarhammerSkavenCompatibility.DoPatchIfDetected();
+
+            #endregion
+
 
             int count = 0,
-                meatCount = MeatOptimization.OptimizeMeat(),
-                fishCount = VFECompatibility.OptimizeFishIfDetected();
+                meatCount = MeatOptimization.OptimizeMeat();
+            count += meatCount;
 
-            count += meatCount + fishCount;
+            #region CompatibilityPatchAfterMainOptimization
+
+            int fishCount = VFECompatibility.OptimizeFishIfDetected();
+            count += fishCount;
 
             MeatPostOptimization.PostOptimize();
+            MoreFiltersCompatibility.DoPatchIfDetected();
+
+            #endregion
+
 
 
             sp.Stop();

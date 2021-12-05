@@ -11,6 +11,7 @@ using Verse;
 
 namespace AlienMeatTest
 {
+    // Spaghetti Code!!
     public class MeatPostOptimization
     {
         public static void PostOptimize()
@@ -50,8 +51,6 @@ namespace AlienMeatTest
                         }
 
                         int a = childThingSetMaker.fixedParams.filter.AllowedDefCount;
-                        MeatLogger.Debug(
-                            $"{childThingSetMaker.fixedParams.filter.DisplayRootCategory.Label}, {b - a}");
                     }
 
                 }
@@ -149,8 +148,6 @@ namespace AlienMeatTest
                             recipeDefIngredient.filter.SetAllow(thingDef, false);
                         }
                         int a = recipeDefIngredient.filter.AllowedDefCount;
-                        MeatLogger.Debug(
-                            $"Recipe: {recipeDefIngredient.filter.DisplayRootCategory.Label}, {b - a}");
                     }
                 }
             }
