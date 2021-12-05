@@ -32,14 +32,16 @@ namespace AlienMeatTest.Patches
             }
         }
 
-        public static FieldInfo dic = typeof(DefDatabase<ThingDef>).GetField("defsByName",
-            BindingFlags.Static | BindingFlags.NonPublic);
+        public static Dictionary<string, ThingDef> defsByName = (Dictionary<string, ThingDef>) AccessTools
+            .Field(typeof(DefDatabase<ThingDef>), "defsByName").GetValue(null);
         public static bool PatchExcuted { get; private set; }
 
-        public static List<string> WhiteListDefNames { get; set; } = new List<string>
+        public static List<string> WhiteListDefNames { get; } = new List<string>
         {
             "Cow", "Human", "Megaspider"
         };
+
+        public static int OptimizedCount { get; internal set; } = 0;
         public static IEnumerable<ThingDef> ImpliedMeatDefsNew()
         {
             PatchExcuted = true;
@@ -52,7 +54,6 @@ namespace AlienMeatTest.Patches
             List<ThingDef> baseMeats = new List<ThingDef>();
             WhiteListDefNames.ForEach(x => baseMeats.Add(MakeNewOrGetMeat(ThingDef.Named(x))));
 
-            var defsByName = (dic.GetValue(null) as Dictionary<string, ThingDef>);
             // baseMeats.AddRange(Settings.WhitelistMeats);
 
             foreach (ThingDef thingDef in DefDatabase<ThingDef>.AllDefs.ToList())
@@ -82,6 +83,7 @@ namespace AlienMeatTest.Patches
                         !defsByName.TryGetValue("Meat_" + thingDef, out _))
                     {
                         defsByName.Add("Meat_" + thingDef, thingDef.race.meatDef);
+                        OptimizedCount++;
                     }
                 }
             }

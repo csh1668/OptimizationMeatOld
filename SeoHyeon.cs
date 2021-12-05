@@ -24,7 +24,7 @@ namespace AlienMeatTest
         public static readonly string GAME_VERSION = "1.3";
 #endif
 
-        public static readonly string VERSION = "1.2.4d";
+        public static readonly string VERSION = "1.3";
 
         /*
          * TODO: 현재 구상중인 새로운 알고리즘
@@ -63,8 +63,8 @@ namespace AlienMeatTest
 
             //sp.Stop();
 
-            //MeatLogger.Message(
-            //    $"<color=red>{count}</color> meat defs have been removed from the game. Elapsed Time: {Math.Round(sp.Elapsed.TotalSeconds,2)}sec");
+            MeatLogger.Message(
+                $"<color=red>{DefGeneratorPatch.OptimizedCount}</color> meat defs have been removed from the game.");
         }
     }
 }
