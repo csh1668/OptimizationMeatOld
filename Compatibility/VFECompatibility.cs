@@ -83,10 +83,22 @@ namespace AlienMeatTest.Compatibility
             ((ThingDef)fishDefTypeOf.GetField("thingDef").GetValue(largeFish)).label =
                 "OM_largeFishLabel".Translate();
 
-            List<string> biomes = new List<string>
+            List<string> biomes = new List<string>();
+
+
+            var terranTypeOf = Type.GetType("VCE_Fishing.BiomeTempDef, VCE-Fishing");
+            var terran = typeof(DefDatabase<>).MakeGenericType(terranTypeOf).GetProperty("AllDefs")?
+                .GetValue(null) as IEnumerable;
+
+            foreach (var i in terran)
             {
-                "Cold", "Warm", "Hot"
-            };
+                var label = (string) (i.GetType().GetField("biomeTempLabel").GetValue(i));
+                biomes.Add(label);
+                MeatLogger.DebugEnumerate(label);
+            }
+
+            MeatLogger.Debug();
+
             fishDefTypeOf.GetField("allowedBiomes").SetValue(smallFish, biomes);
             fishDefTypeOf.GetField("allowedBiomes").SetValue(mediumFish, biomes);
             fishDefTypeOf.GetField("allowedBiomes").SetValue(largeFish, biomes);

@@ -11,11 +11,13 @@ using Verse;
 
 namespace AlienMeatTest
 {
-    // Spaghetti Code!!
+    
     public class MeatPostOptimization
     {
         public static void PostOptimize()
         {
+            // Spaghetti Code!!
+
             MeatLogger.Debug("Post optimization start...");
             // TODO: 이거 고기 add 할때 아예 그냥 인육이랑 소고기랑 곤충고기 추가되지 못하게
             PostfixRemovedMeats(MeatOptimization.RemovedDefs);

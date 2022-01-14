@@ -56,11 +56,12 @@ namespace AlienMeatTest
 
         private void DebugLog_WriteAllRaceMeat()
         {
-            var races = DefDatabase<ThingDef>.AllDefs.Where(x => (x.race != null && !x.race.IsMechanoid));
-            MeatLogger.Debug($"{"RaceDefName",15}|{"MeatDefName",15}|{"UseMeatFrom",15}");
+            var races = DefDatabase<ThingDef>.AllDefs.Where(x => x.race != null && x.race.IsMechanoid);
+            MeatLogger.Debug(($"{"RaceDefName",15}|{"MeatDefName",15}|{"UseMeatFrom",15}").Replace(' ', '　'));
             foreach (var thingDef in races)
             {
-                MeatLogger.Debug($"{thingDef.defName,15}|{thingDef.race.meatDef?.defName ?? "null",15}|{thingDef.race.useMeatFrom?.defName ?? "null",15}");
+                MeatLogger.Debug(
+                    ($"{thingDef.defName,15}|{thingDef.race.meatDef?.defName ?? "null",15}|{thingDef.race.useMeatFrom?.defName ?? "null",15}").Replace(' ', '　'));
             }
         }
 

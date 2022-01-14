@@ -70,6 +70,14 @@ namespace AlienMeatTest
             }
             RemovedDefs = RemovedDefs.Distinct().ToList();
 
+            // TODO: Very dirty and temp code
+            if (RemovedDefs.Remove("RawMagicyte"))
+            {
+                MeatLogger.Warn("Magicyte from A Rimworld of Magic is removed from 'RemovedDefs'.");
+                MeatLogger.Warn("It is not an error but an unexpected situation. Please report this to dev!"); 
+            }
+
+
             MeatLogger.Debugs(RemovedDefs);
 
             RemoveDefs();

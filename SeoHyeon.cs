@@ -24,7 +24,7 @@ namespace AlienMeatTest
         public static readonly string GAME_VERSION = "1.3";
 #endif
 
-        public static readonly string VERSION = "1.2.4e";
+        public static readonly string VERSION = "1.2.4f";
         
 
         static SeoHyeon()
