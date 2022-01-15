@@ -12,6 +12,7 @@ using Verse;
 
 namespace AlienMeatTest.Compatibility
 {
+    // TODO: make VFECompatibility 'Object-Oriented'.
     public static class VFECompatibility
     {
         public static string PackageID { get; private set; } = "vanillaexpanded.vcef";

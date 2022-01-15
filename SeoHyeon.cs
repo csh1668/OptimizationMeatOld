@@ -24,7 +24,9 @@ namespace AlienMeatTest
         public static readonly string GAME_VERSION = "1.3";
 #endif
 
-        public static readonly string VERSION = "1.2.4f";
+        public static readonly string VERSION = "1.2.4g";
+
+        internal static int Count;
         
 
         static SeoHyeon()
@@ -42,35 +44,31 @@ namespace AlienMeatTest
             Stopwatch sp = new Stopwatch();
             sp.Start();
 
-            #region CompatibilityPatchBeforeMainOptimization
+            // PreOptimization
+            CompatibilityDatabase.InitDatabase();
+            foreach (var patch in CompatibilityDatabase.All.Where(x => x.IsPreOptimization))
+            {
+                patch.DoPatch();
+            }
 
-            AnimalsLogicCompatibility.DoWarnIfDetected();
-            OtherOMCompatibility.DoWarnIfDetected();
-            WarhammerSkavenCompatibility.DoPatchIfDetected();
+            // Optimization
+            int meatCount = MeatOptimization.OptimizeMeat();
+            Count += meatCount;
 
-            #endregion
-
-
-            int count = 0,
-                meatCount = MeatOptimization.OptimizeMeat();
-            count += meatCount;
-
-            #region CompatibilityPatchAfterMainOptimization
-
+            //PostOptimization
+            foreach (var patch in CompatibilityDatabase.All.Where(x => !x.IsPreOptimization))
+            {
+                patch.DoPatch();
+            }
             int fishCount = VFECompatibility.OptimizeFishIfDetected();
-            count += fishCount;
-
+            Count += fishCount;
             MeatPostOptimization.PostOptimize();
-            MoreFiltersCompatibility.DoPatchIfDetected();
-
-            #endregion
-
 
 
             sp.Stop();
 
             MeatLogger.Message(
-                $"<color=red>{count}</color> meat defs have been removed from the game. Elapsed Time: {Math.Round(sp.Elapsed.TotalSeconds,2)}sec");
+                $"<color=red>{Count}</color> meat defs have been removed from the game. Elapsed Time: {Math.Round(sp.Elapsed.TotalSeconds,2)}sec");
         }
     }
 }

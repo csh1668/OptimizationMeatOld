@@ -20,7 +20,7 @@ namespace AlienMeatTest
 
             MeatLogger.Debug("Post optimization start...");
             // TODO: 이거 고기 add 할때 아예 그냥 인육이랑 소고기랑 곤충고기 추가되지 못하게
-            PostfixRemovedMeats(MeatOptimization.RemovedDefs);
+            PostfixRemovedMeats(MeatOptimization.RemovedMeatDefs);
             PostfixRemovedMeats(VFECompatibility.RemovedDefs);
 
             ResolveCategoryDefs();
@@ -39,7 +39,7 @@ namespace AlienMeatTest
                     {
                         foreach (var allowedThingDef in childThingSetMaker.fixedParams.filter.AllowedThingDefs)
                         {
-                            if (MeatOptimization.RemovedDefs.Contains(allowedThingDef.defName) ||
+                            if (MeatOptimization.RemovedMeatDefs.Contains(allowedThingDef.defName) ||
                                 VFECompatibility.RemovedDefs.Contains(allowedThingDef.defName))
                             {
                                 toDisallow.Add(allowedThingDef);
@@ -125,7 +125,7 @@ namespace AlienMeatTest
 
         private static void ResolveRecipeDefs()
         {
-            MeatLogger.Debugs(MeatOptimization.RemovedDefs);
+            MeatLogger.Debugs(MeatOptimization.RemovedMeatDefs);
             var recipeDefs = DefDatabase<RecipeDef>.AllDefs;
             foreach (var recipeDef in recipeDefs)
             {
@@ -137,7 +137,7 @@ namespace AlienMeatTest
                     {
                         foreach (var allowedThingDef in recipeDefIngredient.filter.AllowedThingDefs)
                         {
-                            if (MeatOptimization.RemovedDefs.Contains(allowedThingDef.defName) ||
+                            if (MeatOptimization.RemovedMeatDefs.Contains(allowedThingDef.defName) ||
                                 Compatibility.VFECompatibility.RemovedDefs.Contains(allowedThingDef.defName))
                             {
                                 toDisallow.Add(allowedThingDef);

@@ -11,8 +11,9 @@ namespace AlienMeatTest
     {
         private static MeatModSettings settings = LoadedModManager.GetMod<MeatMod>().GetSettings<MeatModSettings>();
         // Meats that need to be removed from the game
-        internal static List<string> RemovedDefs = new List<string>();
-        internal static List<string> WhiteList = new List<string>();
+        public static List<string> RemovedMeatDefs = new List<string>();
+        public static List<string> WhiteListRace = new List<string>();
+        public static List<string> WhiteListMeat = new List<string>();
         public static int OptimizeMeat()
         {
             // Get all of ThingDefs
@@ -29,7 +30,7 @@ namespace AlienMeatTest
 
             foreach (var thingDef in defs)
             {
-                if (thingDef.race == null || thingDef.race.IsMechanoid || WhiteList.Contains(thingDef.defName))
+                if (thingDef.race == null || thingDef.race.IsMechanoid || WhiteListRace.Contains(thingDef.defName))
                     continue;
 
                 if (thingDef.race.useMeatFrom != null)
@@ -41,14 +42,15 @@ namespace AlienMeatTest
                         continue;
                 }
 
-                if (thingDef.race.meatDef == null || singleIngredients.Contains(thingDef.race.meatDef.defName))
+                if (thingDef.race.meatDef == null || singleIngredients.Contains(thingDef.race.meatDef.defName) ||
+                    WhiteListMeat.Contains(thingDef.race.meatDef.defName))
                     continue;
 
                 if (thingDef.race.Humanlike)
                 {
                     if (settings.OptimizationAlienMeat == false)
                         continue;
-                    RemovedDefs.Add(thingDef.race.meatDef.defName.Clone() as string);
+                    RemovedMeatDefs.Add(thingDef.race.meatDef.defName.Clone() as string);
                     thingDef.race.meatDef = humanMeatDef;
                     
                 }
@@ -56,7 +58,7 @@ namespace AlienMeatTest
                 {
                     if (settings.OptimizationAnimalMeat == false)
                         continue;
-                    RemovedDefs.Add(thingDef.race.meatDef.defName.Clone() as string);
+                    RemovedMeatDefs.Add(thingDef.race.meatDef.defName.Clone() as string);
                     thingDef.race.meatDef = insectMeatDef;
                    
                 }
@@ -64,21 +66,14 @@ namespace AlienMeatTest
                 {
                     if (settings.OptimizationAnimalMeat == false)
                         continue;
-                    RemovedDefs.Add(thingDef.race.meatDef.defName.Clone() as string);
+                    RemovedMeatDefs.Add(thingDef.race.meatDef.defName.Clone() as string);
                     thingDef.race.meatDef = cowMeatDef;
                 }
             }
-            RemovedDefs = RemovedDefs.Distinct().ToList();
-
-            // TODO: Very dirty and temp code
-            if (RemovedDefs.Remove("RawMagicyte"))
-            {
-                MeatLogger.Warn("Magicyte from A Rimworld of Magic is removed from 'RemovedDefs'.");
-                MeatLogger.Warn("It is not an error but an unexpected situation. Please report this to dev!"); 
-            }
+            RemovedMeatDefs = RemovedMeatDefs.Distinct().ToList();
 
 
-            MeatLogger.Debugs(RemovedDefs);
+            MeatLogger.Debugs(RemovedMeatDefs);
 
             RemoveDefs();
 
@@ -86,7 +81,7 @@ namespace AlienMeatTest
 
             //DefGenerator.AddImpliedDef(MakeNewRawMeat());
 
-            return RemovedDefs.Count;
+            return RemovedMeatDefs.Count;
         }
 
 
@@ -115,7 +110,7 @@ namespace AlienMeatTest
         private static void RemoveDefs()
         {
             MethodInfo removeMethod = typeof(DefDatabase<ThingDef>).GetMethod("Remove", BindingFlags.Static | BindingFlags.NonPublic);
-            foreach (var removeDef in RemovedDefs)
+            foreach (var removeDef in RemovedMeatDefs)
             {
                 if (removeDef == "Meat_Cow" ||
                     removeDef == "Meat_Human" ||

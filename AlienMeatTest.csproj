@@ -74,11 +74,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Compatibility\AnimalsLogicCompatibility.cs" />
-    <Compile Include="Compatibility\MoreFiltersCompatibility.cs" />
-    <Compile Include="Compatibility\OtherOMCompatibility.cs" />
+    <Compile Include="Compatibility\Compatibility_AnimalLogic.cs" />
+    <Compile Include="Compatibility\Compatibility_ARimworldOfMagic.cs" />
+    <Compile Include="Compatibility\Compatibility.cs" />
+    <Compile Include="Compatibility\CompatibilityDatabase.cs" />
+    <Compile Include="Compatibility\Compatibility_MoreFilters.cs" />
+    <Compile Include="Compatibility\Compatibility_OtherMeatOptimizationMods.cs" />
     <Compile Include="Compatibility\VFECompatibility.cs" />
-    <Compile Include="Compatibility\WarhammerSkavenCompatibility.cs" />
+    <Compile Include="Compatibility\Compatibility_WarhammerSkaven.cs" />
     <Compile Include="MeatLogger.cs" />
     <Compile Include="MeatMod.cs" />
     <Compile Include="MeatModSettings.cs" />
