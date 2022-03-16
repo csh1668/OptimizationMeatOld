@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compatibility\Compatibility_AnimalLogic.cs" />
+    <Compile Include="Compatibility\Compatibility_Typhon.cs" />
     <Compile Include="Compatibility\Compatibility_ARimworldOfMagic.cs" />
     <Compile Include="Compatibility\Compatibility.cs" />
     <Compile Include="Compatibility\CompatibilityDatabase.cs" />
