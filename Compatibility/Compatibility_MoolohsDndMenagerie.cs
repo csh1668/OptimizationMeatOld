@@ -18,11 +18,8 @@ namespace AlienMeatTest.Compatibility
             if (!DetectMod()) return;
             MeatLogger.Debug("Mooloh's DND Menagerie!");
 
-            MeatOptimization.WhiteListRace.Add("DND_GolemSteel");
-            MeatOptimization.WhiteListRace.Add("DND_GolemStone");
-            MeatOptimization.WhiteListRace.Add("DND_AnimatedToolCabinet"); 
-            MeatOptimization.WhiteListRace.Add("DND_AnimatedDiningChair");
-            MeatOptimization.WhiteListRace.Add("DND_AnimatedStool");
+            MeatOptimization.WhiteListMeat.Add("Steel");
+            MeatOptimization.WhiteListMeat.Add("BlocksSandstone");
         }
     }
 }
