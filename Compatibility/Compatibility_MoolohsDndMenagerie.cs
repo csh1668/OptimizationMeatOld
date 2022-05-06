@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-/** Certain animals from Mooloh's DND Menagerie drop non-meat items (namely steel and sandstone). We need to whitelist these not-really-meat-dropping animals
- * so this mod doesn't think that steel and stone are meat and bork the game trying to reconcile that idea.
+/** Certain animals from Mooloh's DND Menagerie drop non-meat items (namely steel and sandstone). We need to whitelist these not-really-meat defs to avoid having the 
+ * optimizer try to remove these defs from the game.
  * */
 namespace AlienMeatTest.Compatibility
 {
