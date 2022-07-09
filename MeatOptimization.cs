@@ -14,19 +14,28 @@ namespace AlienMeatTest
         public static List<string> RemovedMeatDefs = new List<string>();
         public static List<string> WhiteListRace = new List<string>();
         public static List<string> WhiteListMeat = new List<string>();
+
+        private static List<string> _meatWhiteList = MeatListDef.Named("WhiteList").lst;
+
         public static int OptimizeMeat()
         {
-            // Get all of ThingDefs
+            if(_meatWhiteList[0] != "Meat_Cow" || _meatWhiteList[1] != "Meat_Human" || _meatWhiteList[2] != "Meat_Megaspider")
+            {
+                MeatLogger.Error("WhiteList is corrupted. You may resub the mod. Did you edited 'Defs/MeatListDef/Def.xml'?")
+                _meatWhiteList = MeatListDef.Base;
+            }
+
+            // Get all ThingDefs
             var defs = DefDatabase<ThingDef>.AllDefs;
 
-            // Meats that we won't remove
-            var cowMeatDef = ThingDef.Named("Meat_Cow");
-            var humanMeatDef = ThingDef.Named("Meat_Human");
-            var insectMeatDef = ThingDef.Named("Meat_Megaspider");
+            // Meats that we won't remove or should surely remained in RimWorld.
+            var cowMeatDef = ThingDef.Named(_meatWhiteList[0]);
+            var humanMeatDef = ThingDef.Named(_meatWhiteList[1]);
+            var insectMeatDef = ThingDef.Named(_meatWhiteList[2]);
 
 
             // These ingredients(thingdefs) must not be removed
-            List<string> singleIngredients = GetSingleIngredients();
+            //List<string> singleIngredients = GetSingleIngredients();
 
             foreach (var thingDef in defs)
             {
@@ -39,11 +48,11 @@ namespace AlienMeatTest
                     // Already optimized
                     if (useMeatFrom == "Human" || useMeatFrom == "Cow" || useMeatFrom == "Megaspider" ||
                         useMeatFrom == "Steel")
+                        // TODO: how can RW use meat from STEEL???
                         continue;
                 }
 
-                if (thingDef.race.meatDef == null || singleIngredients.Contains(thingDef.race.meatDef.defName) ||
-                    WhiteListMeat.Contains(thingDef.race.meatDef.defName))
+                if (thingDef.race.meatDef == null || _meatWhiteList.Contains(thingDef.race.meatDef.defName))
                     continue;
 
                 if (thingDef.race.Humanlike)
@@ -52,7 +61,6 @@ namespace AlienMeatTest
                         continue;
                     RemovedMeatDefs.Add(thingDef.race.meatDef.defName.Clone() as string);
                     thingDef.race.meatDef = humanMeatDef;
-                    
                 }
                 else if (thingDef.race.FleshType == FleshTypeDefOf.Insectoid)
                 {
@@ -85,6 +93,7 @@ namespace AlienMeatTest
         }
 
 
+        // TODO: We don't need this method now.
         private static List<string> GetSingleIngredients()
         {
             var recipes = DefDatabase<RecipeDef>.AllDefs;
@@ -109,6 +118,7 @@ namespace AlienMeatTest
 
         private static void RemoveDefs()
         {
+            // TODO: Instead of using reflection, just create a method works exactly same the 'DefDatabase<ThingDef>.Remove' method
             MethodInfo removeMethod = typeof(DefDatabase<ThingDef>).GetMethod("Remove", BindingFlags.Static | BindingFlags.NonPublic);
             foreach (var removeDef in RemovedMeatDefs)
             {
