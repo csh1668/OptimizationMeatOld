@@ -7,21 +7,36 @@ using Verse;
 
 namespace AlienMeatTest
 {
+    /*
+
+    TODO: LISTS
+    1) More Filters: 
+        Issue: "Unfortunately, some time between then (whent his worked) and now, Insect and Raw meat no longer count as Rottable when this mod is also loaded."
+        Solution: I have no idea now.
+    2) Moyo:
+        Solution: Add "Meat_Moyo" to Whitelist.
+    3) Mooloh's Dnd Menagerie:
+        Issue: "Normally these animals drop sandstone and steel, respectively, but with both our mods installed they instead both drop raw meat."
+        
+
+
+    */
     public static class MeatOptimization
     {
-        private static MeatModSettings settings = LoadedModManager.GetMod<MeatMod>().GetSettings<MeatModSettings>();
         // Meats that need to be removed from the game
         public static List<string> RemovedMeatDefs = new List<string>();
         public static List<string> WhiteListRace = new List<string>();
         public static List<string> WhiteListMeat = new List<string>();
 
-        private static List<string> _meatWhiteList = MeatListDef.Named("WhiteList").lst;
+        private static List<string> _meatWhiteList;
 
         public static int OptimizeMeat()
         {
-            if(_meatWhiteList[0] != "Meat_Cow" || _meatWhiteList[1] != "Meat_Human" || _meatWhiteList[2] != "Meat_Megaspider")
+            // Load WhiteList
+            _meatWhiteList = MeatListDef.Named("WhiteList")?.lst;
+            if(_meatWhiteList == null)
             {
-                MeatLogger.Error("WhiteList is corrupted. You may resub the mod. Did you edited 'Defs/MeatListDef/Def.xml'?")
+                MeatLogger.Error("WhiteList is not exist or corrupted. You may resub the mod. Did you edited 'Defs/MeatListDef/Def.xml'?")
                 _meatWhiteList = MeatListDef.Base;
             }
 
@@ -29,9 +44,9 @@ namespace AlienMeatTest
             var defs = DefDatabase<ThingDef>.AllDefs;
 
             // Meats that we won't remove or should surely remained in RimWorld.
-            var cowMeatDef = ThingDef.Named(_meatWhiteList[0]);
-            var humanMeatDef = ThingDef.Named(_meatWhiteList[1]);
-            var insectMeatDef = ThingDef.Named(_meatWhiteList[2]);
+            var cowMeatDef = ThingDef.Named("Meat_Cow");
+            var humanMeatDef = ThingDef.Named("Meat_Human");
+            var insectMeatDef = ThingDef.Named(_"Meat_Megaspider");
 
 
             // These ingredients(thingdefs) must not be removed
@@ -48,7 +63,7 @@ namespace AlienMeatTest
                     // Already optimized
                     if (useMeatFrom == "Human" || useMeatFrom == "Cow" || useMeatFrom == "Megaspider" ||
                         useMeatFrom == "Steel")
-                        // TODO: how can RW use meat from STEEL???
+                        // TODO: how can it uses meat from STEEL???
                         continue;
                 }
 
@@ -57,14 +72,14 @@ namespace AlienMeatTest
 
                 if (thingDef.race.Humanlike)
                 {
-                    if (settings.OptimizationAlienMeat == false)
+                    if (MeatModSettings.OptimizationAlienMeat == false)
                         continue;
                     RemovedMeatDefs.Add(thingDef.race.meatDef.defName.Clone() as string);
                     thingDef.race.meatDef = humanMeatDef;
                 }
                 else if (thingDef.race.FleshType == FleshTypeDefOf.Insectoid)
                 {
-                    if (settings.OptimizationAnimalMeat == false)
+                    if (MeatModSettings.OptimizationAnimalMeat == false)
                         continue;
                     RemovedMeatDefs.Add(thingDef.race.meatDef.defName.Clone() as string);
                     thingDef.race.meatDef = insectMeatDef;
@@ -72,7 +87,7 @@ namespace AlienMeatTest
                 }
                 else
                 {
-                    if (settings.OptimizationAnimalMeat == false)
+                    if (MeatModSettings.OptimizationAnimalMeat == false)
                         continue;
                     RemovedMeatDefs.Add(thingDef.race.meatDef.defName.Clone() as string);
                     thingDef.race.meatDef = cowMeatDef;

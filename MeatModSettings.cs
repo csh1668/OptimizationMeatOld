@@ -12,10 +12,10 @@ namespace AlienMeatTest
 {
     public class MeatModSettings : ModSettings
     {
-        public bool OptimizationAnimalMeat = true;
-        public bool OptimizationAlienMeat = false;
-        public bool OptimizationFishMeat = false;
-        public bool DebugMode = false;
+        public static bool OptimizationAnimalMeat = true;
+        public static bool OptimizationAlienMeat = false;
+        public static bool OptimizationFishMeat = false;
+        public static bool DebugMode = false;
 
         public override void ExposeData()
         {
