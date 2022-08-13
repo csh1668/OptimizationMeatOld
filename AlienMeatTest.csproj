@@ -44,12 +44,12 @@
       <HintPath>..\..\..\..\..\..\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Assembly-CSharp" Condition="'$(Configuration)' == 'Release'">
-      <HintPath>..\..\..\..\DLL\1.2\Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Assembly-CSharp" Condition="'$(Configuration)' == 'Release for 1.3'">
       <HintPath>..\..\..\..\DLL\1.3\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -68,10 +68,6 @@
       <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="VCE-Fishing">
-      <HintPath>..\..\..\..\..\..\workshop\content\294100\1914064942\1.3\Assemblies\VCE-Fishing.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compatibility\Compatibility_AnimalLogic.cs" />
@@ -83,6 +79,7 @@
     <Compile Include="Compatibility\Compatibility_OtherMeatOptimizationMods.cs" />
     <Compile Include="Compatibility\VFECompatibility.cs" />
     <Compile Include="Compatibility\Compatibility_WarhammerSkaven.cs" />
+    <Compile Include="MeatListDef.cs" />
     <Compile Include="MeatLogger.cs" />
     <Compile Include="MeatMod.cs" />
     <Compile Include="MeatModSettings.cs" />
@@ -93,6 +90,5 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestPatch.cs" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

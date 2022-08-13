@@ -24,7 +24,7 @@ namespace AlienMeatTest
         public static readonly string GAME_VERSION = "1.3";
 #endif
 
-        public static readonly string VERSION = "1.2.4g";
+        public static readonly string VERSION = "1.3.0";
 
         internal static int Count;
         
@@ -55,11 +55,11 @@ namespace AlienMeatTest
             int meatCount = MeatOptimization.OptimizeMeat();
             Count += meatCount;
 
-            //PostOptimization
-            foreach (var patch in CompatibilityDatabase.All.Where(x => !x.IsPreOptimization))
-            {
-                patch.DoPatch();
-            }
+            ////PostOptimization
+            //foreach (var patch in CompatibilityDatabase.All.Where(x => !x.IsPreOptimization))
+            //{
+            //    patch.DoPatch();
+            //}
             int fishCount = VFECompatibility.OptimizeFishIfDetected();
             Count += fishCount;
             MeatPostOptimization.PostOptimize();

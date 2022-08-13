@@ -17,7 +17,7 @@ namespace AlienMeatTest
         public MeatMod(ModContentPack content) : base(content)
         {
             settings = GetSettings<MeatModSettings>();
-            MeatLogger.debugMode = settings.DebugMode;
+            MeatLogger.debugMode = MeatModSettings.DebugMode;
 
 
             Harmony h = new Harmony("com.seohyeon.optimization.meat");

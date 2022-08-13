@@ -17,7 +17,6 @@ namespace AlienMeatTest.Compatibility
     {
         public static string PackageID { get; private set; } = "vanillaexpanded.vcef";
         public static List<string> RemovedDefs { get; private set; } = new List<string>();
-        private static MeatModSettings settings = LoadedModManager.GetMod<MeatMod>().GetSettings<MeatModSettings>();
 
         private static Type fishDefTypeOf;
         private static Type fishDefDatabaseTypeOf;
@@ -26,7 +25,7 @@ namespace AlienMeatTest.Compatibility
         {
             if (!Detect()) return 0;
             MeatLogger.Message("Vanilla Fishing Expanded Detected!");
-            if (!settings.OptimizationFishMeat) return 0;
+            if (!MeatModSettings.OptimizationFishMeat) return 0;
             MeatLogger.Debug("Fish Optimizing...");
             fishDefTypeOf = Type.GetType("VCE_Fishing.FishDef, VCE-Fishing");
             fishDefDatabaseTypeOf = typeof(DefDatabase<>).MakeGenericType(fishDefTypeOf);
