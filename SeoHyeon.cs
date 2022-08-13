@@ -24,7 +24,7 @@ namespace AlienMeatTest
         public static readonly string GAME_VERSION = "1.3";
 #endif
 
-        public static readonly string VERSION = "1.2.4h";
+        public static readonly string VERSION = "1.2.4g";
 
         internal static int Count;
         
@@ -48,14 +48,7 @@ namespace AlienMeatTest
             CompatibilityDatabase.InitDatabase();
             foreach (var patch in CompatibilityDatabase.All.Where(x => x.IsPreOptimization))
             {
-                try
-                {
-                    patch.DoPatch();
-                }
-                catch (Exception e)
-                {
-                    MeatLogger.Error($"Error in {patch}: {e.Message}");
-                }
+                patch.DoPatch();
             }
 
             // Optimization
@@ -65,14 +58,7 @@ namespace AlienMeatTest
             //PostOptimization
             foreach (var patch in CompatibilityDatabase.All.Where(x => !x.IsPreOptimization))
             {
-                try
-                {
-                    patch.DoPatch();
-                }
-                catch (Exception e)
-                {
-                    MeatLogger.Error($"Error in {patch}: {e.Message}");
-                }
+                patch.DoPatch();
             }
             int fishCount = VFECompatibility.OptimizeFishIfDetected();
             Count += fishCount;

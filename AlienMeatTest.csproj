@@ -68,6 +68,10 @@
       <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="VCE-Fishing">
+      <HintPath>..\..\..\..\..\..\workshop\content\294100\1914064942\1.3\Assemblies\VCE-Fishing.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compatibility\Compatibility_AnimalLogic.cs" />

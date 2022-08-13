@@ -10,7 +10,7 @@ namespace AlienMeatTest.Compatibility
     public class Compatibility_WarhammerSkaven : Compatibility
     {
         protected override string PackageID => "kompadt.warhammer.skaven";
-        public override bool IsPreOptimization => true;
+        public override bool IsPreOptimization { get; }
         public override void DoPatch()
         {
             if (!DetectMod()) return;
@@ -29,8 +29,7 @@ namespace AlienMeatTest.Compatibility
                 MeatOptimization.WhiteListRace.Add(defName);
                 i.race.meatDef = humanMeatDef;
             }
-
-            MeatOptimization.RemovedMeatDefs.Add(skavenMeat);
+            MeatOptimization.RemovedMeatDefs.Add(ThingDef.Named(skavenMeat).defName);
         }
     }
 }
