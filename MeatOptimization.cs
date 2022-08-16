@@ -34,12 +34,11 @@ namespace AlienMeatTest
         public static int OptimizeMeat()
         {
             // Load private fields
-            MeatLogger.Error(DefDatabase<MeatListDef>.GetNamed("WhiteList").label);
             _meatWhiteList = DefDatabase<MeatListDef>.GetNamed("WhiteList")?.meats;
             _raceWhiteList = DefDatabase<MeatListDef>.GetNamed("WhiteList")?.races;
             if(_meatWhiteList == null || _raceWhiteList == null)
             {
-                MeatLogger.Error("WhiteList is not exist or corrupted. You may resub the mod. Did you edited 'Defs/MeatListDef/Def.xml'?");
+                MeatLogger.Error("WhiteList is not exist or corrupted. You may resub the mod. Did you edited 'Steam/steamapps/workshop/content/294100/2542931556/Defs/WhiteList.xml'?");
                 _meatWhiteList = new List<string>();
                 _raceWhiteList = new List<string>();
             }
